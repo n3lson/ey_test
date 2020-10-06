@@ -10,6 +10,9 @@ import java.util.List;
 
 import static com.ey.task_1.util.Constants.*;
 
+/*
+* This class
+* */
 public class DatabaseImporter implements AutoCloseable {
     private static final String JDBC_DRIVER = "com.mysql.cj.jdbc.Driver";
     private static final String DATABASE_URL = "jdbc:mysql://localhost:3306/ey?serverTimezone=UTC";
@@ -22,17 +25,22 @@ public class DatabaseImporter implements AutoCloseable {
     private final Connection connection;
 
     public DatabaseImporter() throws SQLException, ClassNotFoundException {
+        // Get connection to the database and find the JDBC driver. Throw exceptions when failed.
         this.connection = DriverManager.getConnection(DATABASE_URL, USER, PASSWORD);
         Class.forName(JDBC_DRIVER);
     }
 
+    // Import data from the generated file to the database.
     public void importData(TextFile src) throws IOException, SQLException, ParseException {
+        // Read lines from the file.
         List<String> lines = src.lines();
         int total = lines.size();
         int imported = 0;
 
+        // Prepare statement for executing an SQL query.
         PreparedStatement statement = this.connection.prepareStatement(INSERT_QUERY);
 
+        // Split each line into fields and import them to the database.
         for (String line: lines) {
             String[] fields = line.split(DELIMITER);
             statement.setDate(1, new Date(new SimpleDateFormat(DATE_PATTERN).parse(fields[0]).getTime()));
@@ -48,6 +56,7 @@ public class DatabaseImporter implements AutoCloseable {
         System.out.println(ANSI_CYAN +"\nImporting finished." + ANSI_RESET);
     }
 
+    // Method for auto-closing the connection.
     @Override
     public void close() throws SQLException {
         this.connection.close();

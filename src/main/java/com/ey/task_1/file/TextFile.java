@@ -11,6 +11,10 @@ import java.util.stream.Collectors;
 import static com.ey.task_1.util.Constants.ANSI_CYAN;
 import static com.ey.task_1.util.Constants.ANSI_RESET;
 
+/*
+* This class represents the text file that we generated
+* and want to operate on.
+* */
 public class TextFile {
     private final File file;
 
@@ -18,11 +22,14 @@ public class TextFile {
         this.file = file;
     }
 
+    // Get lines of this file.
     public List<String> lines() throws IOException {
         return Files.lines(this.file.toPath()).collect(Collectors.toList());
     }
 
+    // Merge this file with another one.
     public void mergeWith(Path src) throws IOException {
+        // Read bytes from the source and append to the current file.
         Files.write(
                 this.file.toPath(),
                 Files.readAllBytes(src),
@@ -30,12 +37,18 @@ public class TextFile {
         );
     }
 
+    // Remove lines that contain the specified string.
     public void removeLinesIfContain(String str) throws IOException {
+        // Read lines from the file.
         List<String> lines = this.lines();
+        // Get lines amount.
         int linesAmount = lines.size();
+        // Iterate through the lines and remove any that contains the string.
         lines.removeIf(l -> l.contains(str));
+        // Rewrite data to the file.
         Files.write(this.file.toPath(), lines);
 
+        // Log information about the number of the removed lines.
         System.out.printf(ANSI_CYAN + "Strings removed: %d\n" + ANSI_RESET, linesAmount - lines.size());
     }
 }

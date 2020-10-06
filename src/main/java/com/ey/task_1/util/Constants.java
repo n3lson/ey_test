@@ -27,9 +27,10 @@ public class Constants {
 
     public static final String OUTPUT_DIRECTORY = System.getProperty("user.dir") + "\\generated_output\\";
     public static final String FILE_TYPE = ".txt";
-    public static final int FILES_AMOUNT = 2;
-    public static final int LINES_AMOUNT = 1000;
+    public static final int FILES_AMOUNT = 100;
+    public static final int LINES_AMOUNT = 100_000;
 
+    // Constants for cyan output to the console.
     public static final String ANSI_RESET = "\u001B[0m";
     public static final String ANSI_CYAN = "\u001B[36m";
 

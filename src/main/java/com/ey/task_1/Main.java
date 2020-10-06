@@ -14,15 +14,22 @@ import static com.ey.task_1.util.Constants.OUTPUT_DIRECTORY;
 
 public class Main {
     public static void main(String[] args) throws IOException {
-        //1
+        /* Task 1
+        * Generate 100 files with 100 000 lines of random output.
+        * */
         new FileGenerator(OUTPUT_DIRECTORY).generateFiles(FILES_AMOUNT);
 
-        //2
+        /* Task 2
+        * Merge 2 generated files into one.
+        * Remove the lines that contain a specified string.
+        * */
         TextFile file = new TextFile(new File(OUTPUT_DIRECTORY + "0.txt"));
         file.mergeWith(new File(OUTPUT_DIRECTORY + "1.txt").toPath());
         file.removeLinesIfContain("abc");
 
-        //3
+        /* Task 3
+        *  Import data from the file to the database.
+        * */
         try (DatabaseImporter importer = new DatabaseImporter()) {
             importer.importData(file);
         } catch (ClassNotFoundException e) {
